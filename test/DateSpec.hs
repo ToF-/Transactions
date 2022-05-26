@@ -5,7 +5,7 @@ import Test.Hspec
 import Date
 
 
-spec:: SpecWith ()
+spec :: SpecWith ()
 spec = do
     describe "a date" $ do
         it "can be created from a year, month and day" $ do

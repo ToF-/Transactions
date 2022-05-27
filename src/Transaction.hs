@@ -8,7 +8,9 @@ import Money
 
 import Data.ByteString.Lazy
 import Data.Csv
-import Data.Vector
+import qualified Data.Vector as V
+import qualified Data.List as L
+import qualified Data.Maybe as M
 import Control.Applicative
 
 data Transaction = Transaction {
@@ -33,4 +35,10 @@ transaction :: Date -> Label -> Maybe Note -> Maybe Money -> Maybe Money -> Tran
 transaction = Transaction 
 
 fromCSV :: ByteString -> Either String [Transaction]
-fromCSV bs = (toList . snd) <$> decodeByName bs 
+fromCSV bs = (V.toList . snd) <$> decodeByName bs 
+
+summarize :: [Transaction] -> (Money, Money)
+summarize ts = (ct,dt) 
+    where
+        ct = Prelude.foldl (+) (Money 0) (M.catMaybes $ L.map transaction_credit ts)
+        dt = Prelude.foldl (+) (Money 0) (M.catMaybes $ L.map transaction_debit ts)

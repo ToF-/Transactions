@@ -31,5 +31,10 @@ spec = do
                                 ,Transaction (theDay 2022 06 27) (label "another transaction") (Just (note "with a note")) (Just (money 17.00)) Nothing]
 
 
+        it "can be summarized" $ do
+            let ts = [Transaction (theDay 2022 05 26) (label "a transaction label") Nothing Nothing (Just (money 48.07)) 
+                     ,Transaction (theDay 2022 06 27) (label "another transaction") (Just (note "with a note")) (Just (money 17.00)) Nothing
+                     ,Transaction (theDay 2022 06 27) (label "another transaction") (Just (note "with a note")) (Just (money 37.00)) Nothing]
+            summarize ts `shouldBe` (money 54, money 48.07)
 
 

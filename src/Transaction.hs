@@ -8,9 +8,9 @@ import Money
 data Transaction = Transaction {
     transaction_date   :: Date,
     transaction_label  :: Label,
-    transaction_note   :: Note,
-    transaction_credit :: Money,
-    transaction_debit  :: Money }
+    transaction_note   :: Maybe Note,
+    transaction_credit :: Maybe Money,
+    transaction_debit  :: Maybe Money }
 
-transaction :: Date -> Label -> Note -> Money -> Money -> Transaction
+transaction :: Date -> Label -> Maybe Note -> Maybe Money -> Maybe Money -> Transaction
 transaction = Transaction 

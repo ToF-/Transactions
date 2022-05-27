@@ -4,6 +4,7 @@ module Date
 import Data.Time
 
 data Date = Date Day
+    deriving Eq
 
 instance Show Date where
     show (Date d) = show d

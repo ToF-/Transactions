@@ -29,6 +29,8 @@ library
       Label
       Lib
       Money
+      Note
+      Transaction
   other-modules:
       Paths_transactions
   hs-source-dirs:
@@ -60,6 +62,7 @@ test-suite transactions-test
       DateSpec
       LabelSpec
       MoneySpec
+      NoteSpec
       TransactionSpec
       Paths_transactions
   hs-source-dirs:

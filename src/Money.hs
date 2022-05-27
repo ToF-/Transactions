@@ -5,6 +5,7 @@ import Data.Fixed
 import Data.Text
 
 data Money = Money { value :: Centi }
+    deriving Eq
 
 money :: Double -> Money
 money = Money . MkFixed . round . (* 100)

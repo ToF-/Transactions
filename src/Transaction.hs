@@ -9,6 +9,7 @@ import Money
 import Data.ByteString.Lazy
 import Data.Csv
 import Data.Vector
+import Control.Applicative
 
 data Transaction = Transaction {
     transaction_date   :: Date,
@@ -19,13 +20,13 @@ data Transaction = Transaction {
     deriving (Eq,Show)
 
 instance FromNamedRecord Transaction where
-    parseNamedRecord m =
+    parseNamedRecord rec =
         Transaction 
-          <$> m .: "date"
-          <*> m .: "label"
-          <*> (m .: "note" :: Parser (Maybe Note))
-          <*> (m .: "credit" :: Parser (Maybe Money))
-          <*> (m .: "debit"  :: Parser (Maybe Money))
+          <$> rec .: "date"
+          <*> rec .: "label"
+          <*> (rec .: "note" :: Parser (Maybe Note))
+          <*> ((Just <$> Data.Csv.lookup rec "credit") <|> pure Nothing)
+          <*> ((Just <$> Data.Csv.lookup rec "debit") <|> pure Nothing)
 
 
 transaction :: Date -> Label -> Maybe Note -> Maybe Money -> Maybe Money -> Transaction

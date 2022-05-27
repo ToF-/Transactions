@@ -1,6 +1,12 @@
 module Main where
 
-import Lib
+import Transaction
+import Data.ByteString.Lazy as BS
+import Data.Csv
+import Data.Vector
 
 main :: IO ()
-main = someFunc
+main = do
+    bs <- BS.readFile "test/example.csv"
+    let result = decodeByName bs :: Either String (Header,Vector Transaction)
+    print result

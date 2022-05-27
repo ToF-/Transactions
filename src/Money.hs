@@ -3,6 +3,8 @@ module Money
 
 import Data.Fixed
 import Data.Text
+import Data.Text.Encoding ( decodeUtf8, encodeUtf8 )
+import Data.Csv
 
 data Money = Money { value :: Centi }
     deriving Eq
@@ -18,6 +20,10 @@ instance Read Money where
                        Just ('-', rest) -> parseNegativeMoney (unpack rest)
                        _                -> parsePositiveMoney s
 
+instance FromField Money where
+    parseField f = case uncons (decodeUtf8 f) of
+                     Just ('-', rest) -> negate . money <$> (parseField (encodeUtf8 rest))
+                     _ -> money <$> parseField f
 
 instance Num Money where
     negate (Money v) = (Money (negate v))

@@ -17,8 +17,8 @@ data Transaction = Transaction {
     transaction_date   :: Date,
     transaction_label  :: Label,
     transaction_note   :: Maybe Note,
-    transaction_credit :: Maybe Money,
-    transaction_debit  :: Maybe Money }
+    transaction_debit  :: Maybe Money,
+    transaction_credit :: Maybe Money }
     deriving (Eq,Show)
 
 instance FromNamedRecord Transaction where
@@ -27,8 +27,8 @@ instance FromNamedRecord Transaction where
           <$> rec .: "date"
           <*> rec .: "label"
           <*> ((Just <$> Data.Csv.lookup rec "note") <|> pure Nothing)
-          <*> ((Just <$> Data.Csv.lookup rec "credit") <|> pure Nothing)
           <*> ((Just <$> Data.Csv.lookup rec "debit") <|> pure Nothing)
+          <*> ((Just <$> Data.Csv.lookup rec "credit") <|> pure Nothing)
 
 
 transaction :: Date -> Label -> Maybe Note -> Maybe Money -> Maybe Money -> Transaction
@@ -38,7 +38,7 @@ fromCSV :: ByteString -> Either String [Transaction]
 fromCSV bs = (V.toList . snd) <$> decodeByName bs 
 
 summarize :: [Transaction] -> (Money, Money)
-summarize ts = (ct,dt) 
+summarize ts = (dt,ct) 
     where
         ct = Prelude.foldl (+) (Money 0) (M.catMaybes $ L.map transaction_credit ts)
         dt = Prelude.foldl (+) (Money 0) (M.catMaybes $ L.map transaction_debit ts)

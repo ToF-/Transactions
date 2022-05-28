@@ -26,7 +26,7 @@ instance FromNamedRecord Transaction where
         Transaction 
           <$> rec .: "date"
           <*> rec .: "label"
-          <*> (rec .: "note" :: Parser (Maybe Note))
+          <*> ((Just <$> Data.Csv.lookup rec "note") <|> pure Nothing)
           <*> ((Just <$> Data.Csv.lookup rec "credit") <|> pure Nothing)
           <*> ((Just <$> Data.Csv.lookup rec "debit") <|> pure Nothing)
 

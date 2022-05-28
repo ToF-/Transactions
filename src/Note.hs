@@ -4,6 +4,7 @@ module Note
 import Data.Text
 import Data.Text.Encoding ( decodeUtf8 )
 import Data.Csv
+import Control.Applicative
 
 data Note = Note Text
     deriving Eq
@@ -18,4 +19,6 @@ instance Read Note where
     readsPrec _ = \s -> [(note s,"")]
 
 instance FromField Note where
-    parseField = pure . Note . strip . decodeUtf8
+    parseField f = case unpack (strip (decodeUtf8 f)) of
+                     "" -> Control.Applicative.empty
+                     s -> pure (Note (pack s))

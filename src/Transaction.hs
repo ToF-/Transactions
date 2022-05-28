@@ -8,6 +8,7 @@ import Money
 
 import Data.ByteString.Lazy
 import Data.Csv
+import Text.Printf
 import qualified Data.Vector as V
 import qualified Data.List as L
 import qualified Data.Maybe as M
@@ -19,7 +20,15 @@ data Transaction = Transaction {
     transaction_note   :: Maybe Note,
     transaction_debit  :: Maybe Money,
     transaction_credit :: Maybe Money }
-    deriving (Eq,Show)
+    deriving Eq
+
+instance Show Transaction where
+    show t = printf "%08s|%-60s|%-40s|%10s|%10s"
+                (show (transaction_date t))
+                (show (transaction_label t))
+                (M.maybe "" show (transaction_note t))
+                (M.maybe "" show (transaction_debit t))
+                (M.maybe "" show (transaction_credit t))
 
 instance FromNamedRecord Transaction where
     parseNamedRecord rec =

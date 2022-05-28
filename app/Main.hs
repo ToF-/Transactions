@@ -13,7 +13,10 @@ main = do
       0 -> Prelude.putStrLn "no file given"
       _ -> do
         bs <- BS.readFile (args!!0)
-        let result = summarize <$> fromCSV bs 
+        let result = fromCSV bs 
         case result of
-          Right (debit,credit) -> Prelude.putStrLn $ "debit: " <> show debit <> "\tcredit: " <> show credit
+          Right ts -> do
+                Prelude.putStrLn $ unlines $ Prelude.map show ts
+                let (debit, credit) = summarize ts
+                Prelude.putStrLn $ "debit: " <> show debit <> "\tcredit: " <> show credit
           Left msg -> Prelude.putStrLn msg

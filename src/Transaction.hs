@@ -13,6 +13,7 @@ import qualified Data.Vector as V
 import qualified Data.List as L
 import qualified Data.Maybe as M
 import Control.Applicative
+import Data.Ord
 
 data Transaction = Transaction {
     transaction_date   :: Date,
@@ -39,6 +40,10 @@ instance FromNamedRecord Transaction where
           <*> ((Just <$> Data.Csv.lookup rec "debit") <|> pure Nothing)
           <*> ((Just <$> Data.Csv.lookup rec "credit") <|> pure Nothing)
 
+instance Ord Transaction where
+    compare ta tb = case comparing transaction_date ta tb of
+                      EQ -> comparing transaction_label ta tb
+                      other -> other
 
 transaction :: Date -> Label -> Maybe Note -> Maybe Money -> Maybe Money -> Transaction
 transaction = Transaction 

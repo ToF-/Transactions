@@ -5,6 +5,7 @@ import System.Environment
 import Data.ByteString.Lazy as BS
 import Data.Csv
 import Data.Vector
+import Data.List
 
 main :: IO ()
 main = do
@@ -16,7 +17,7 @@ main = do
         let result = fromCSV bs 
         case result of
           Right ts -> do
-                Prelude.putStrLn $ unlines $ Prelude.map show ts
+                Prelude.putStrLn $ unlines $ Prelude.map show (sort ts)
                 let (debit, credit) = summarize ts
                 Prelude.putStrLn $ "debit: " <> show debit <> "\tcredit: " <> show credit
           Left msg -> Prelude.putStrLn msg

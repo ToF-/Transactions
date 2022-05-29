@@ -7,7 +7,7 @@ import Data.Csv
 import Control.Applicative
 
 data Label = Label Text
-    deriving Eq
+    deriving (Eq,Ord)
 
 label :: String -> Label
 label = Label . pack

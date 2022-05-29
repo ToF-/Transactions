@@ -8,7 +8,7 @@ import Data.Text.Encoding ( decodeUtf8 )
 import Data.Text          ( unpack )
 
 data Date = Date Day
-    deriving Eq
+    deriving (Eq,Ord)
 
 instance Show Date where
     show (Date d) = show d
